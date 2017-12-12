@@ -152,7 +152,9 @@ A subset of the module features can be configured directly through the `react-sc
         "logLevel": "debug"
       }
     }
-  }
+  },
+ "publicPath": "./my-folder/" //default to "/",
+ "allowBabelrc": true // default to false
 }
 ```
 

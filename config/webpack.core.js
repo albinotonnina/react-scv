@@ -4,7 +4,10 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
 const merge = require('webpack-merge');
 
-const {BUILD, CWD_NODE_MODULES, NODE_MODULES, RULES_EXCLUDE, RULES_INCLUDE} = require('./constants');
+const {BUILD, CWD_NODE_MODULES, NODE_MODULES, RULES_EXCLUDE, RULES_INCLUDE, REACT_PACKAGE_CONFIG} = require('./constants');
+
+const allowBabelrc = REACT_PACKAGE_CONFIG.allowBabelrc || false
+const publicPath = REACT_PACKAGE_CONFIG.publicPath || '/'
 
 module.exports = function (config, cursors) {
 
@@ -22,7 +25,7 @@ module.exports = function (config, cursors) {
     output: {
       path: BUILD,
       filename: 'bundle.js',
-      publicPath: '/'
+      publicPath: publicPath
     },
     plugins: [
       cursors.push('define-plugin',
@@ -85,7 +88,7 @@ module.exports = function (config, cursors) {
             {
               loader: 'babel-loader',
               options: {
-                babelrc: false,
+                babelrc: allowBabelrc,
                 presets: [
                   ['@babel/preset-env', {"modules": false}], //{ "modules": false } is needed to make react-hot-loader work
                   '@babel/preset-stage-0',
