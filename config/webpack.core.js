@@ -3,29 +3,28 @@
 const DefinePlugin = require('webpack').DefinePlugin;
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin');
 const merge = require('webpack-merge');
-
 const {BUILD, CWD_NODE_MODULES, NODE_MODULES, RULES_EXCLUDE, RULES_INCLUDE, REACT_PACKAGE_CONFIG} = require('./constants');
-
 const allowBabelrc = REACT_PACKAGE_CONFIG.allowBabelrc || false
-const publicPath = REACT_PACKAGE_CONFIG.publicPath || '/'
 
 module.exports = function (config, cursors) {
 
   const ENV = Object
-  .keys(process.env)
-  .filter(key => key.toUpperCase().startsWith('NEO_'))
-  .reduce((env, key) => {
-    env[`process.env.${key}`] = JSON.stringify(process.env[key]);
-    return env;
-  }, {
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  });
+    .keys(process.env)
+    .filter(key => key.toUpperCase().startsWith('NEO_'))
+    .reduce((env, key) => {
+      env[`process.env.${key}`] = JSON.stringify(process.env[key]);
+      return env;
+    }, {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    });
+
+  const publicPath = process.env.NODE_ENV === 'production' ? REACT_PACKAGE_CONFIG.publicPath : '/';
 
   return merge(config, {
     output: {
       path: BUILD,
       filename: 'bundle.js',
-      publicPath: publicPath
+      publicPath
     },
     plugins: [
       cursors.push('define-plugin',
