@@ -2,6 +2,7 @@
 
 const overrides = require('../../src/overrides');
 const path = require('path');
+const Logger = require("../../utils/Logger");
 const CONFIG_FILE_PATH = overrides.filePath(path.join(__dirname, '../../config/jest.js'));
 const jest = require('jest');
 
@@ -15,10 +16,8 @@ module.exports = (args, done) => {
 
   const argsString = stringify(processArgs);
 
-  console.log('running: jest ' + argsString)
-
+  Logger.status('⏱','running: jest ' + argsString)
   jest.run(argsString, process.cwd());
-
 }
 
 function addConfigArgIfNotPresent (processArgs) {

@@ -2,6 +2,7 @@
 
 const DevServer = require('webpack-dev-server');
 const path = require('path');
+const Logger = require("../../utils/Logger");
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const CWD = process.cwd();
 const PACKAGE = require(path.join(CWD, 'package.json'));
@@ -30,7 +31,7 @@ module.exports = (args, done) => {
     'webpack/hot/dev-server'
   );
 
-  console.log(' --- starting dev server, and api proxy --- ');
+  Logger.status('🚧','starting dev server and api proxy \n');
 
   //todo experimental feature
   if (flow) {
@@ -48,7 +49,7 @@ module.exports = (args, done) => {
 
   const server = new DevServer(compiler, config.devServer);
 
-  server.listen(port, host, () => console.log(`Listening on ${schema}://${host}:${port}`));
+  server.listen(port, host, () => Logger.status('🔴', `Listening on ${schema}://${host}:${port}`, 'white'));
 
   process.on('SIGINT', () => {
     server.close();

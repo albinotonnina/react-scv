@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const Logger = require('./../utils/Logger')
 
 module.exports = function webpackBuild (config) {
 
@@ -7,16 +8,16 @@ module.exports = function webpackBuild (config) {
     webpack(config, (err, stats) => {
       if (err || stats.hasErrors()) {
         if (err) {
-          console.error(err.stack || err);
+          Logger.error(err.stack || err);
           if (err.details) {
-            console.error(err.details);
+            Logger.error(err.details);
           }
         } else if (stats.hasErrors()) {
-          console.log(stats.toString({colors: true}));
+          Logger.log(stats.toString({colors: true}));
         }
         reject();
       } else {
-        console.log(stats.toString({colors: true}));
+        Logger.log(stats.toString({colors: true}));
         setTimeout(() => { //because apparently some webpack plugin might schedule some async work
           resolve();
         }, 0);
